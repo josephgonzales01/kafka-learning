@@ -23,7 +23,7 @@
 #### Produce a message to a Topic
    2. Execute kafka-console-producer.sh
    >```
-   > $ kafka-console-producer.sh --broker-list dev_kafka:9092 --topic secondTopic acks=all
+   > $ kafka-console-producer.sh --broker-list dev_kafka:9092 --topic firstTopic acks=all
    >```
    > Note: producing a message to a non existing topic, that topic will be automatically created with a default number 
    > of partitions and replicas as described inside kafka image /opt/kafka/config/server.properties file.
@@ -31,5 +31,7 @@
 #### Consume a message from a Topic
    2. Execute kafka-console-consumer.sh
    >```
-   > $ kafka-console-consumer.sh --bootstrap-server dev_kafka:9092 --topic firstTopic --from-beginning
+   > $ kafka-console-consumer.sh --bootstrap-server dev_kafka:9092 --topic firstTopic --from-beginning --group my-consumer-app
    >```
+   >Note: --from-beginning property reads all the message in which the given group (--group) haven't read before (last committed offset),
+   > if no --group is set a consumer group will be automatically created with group named "console-consumer-NNNN"
