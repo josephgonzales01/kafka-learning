@@ -26,7 +26,7 @@
    > $ kafka-console-producer.sh --broker-list dev_kafka:9092 --topic secondTopic acks=all
    >```
    > Note: producing a message to a non existing topic, that topic will be automatically created with a default number 
-   > of partition and replicas described in /opt/kafka/config/server.properties file.
+   > of partitions and replicas as described inside kafka image /opt/kafka/config/server.properties file.
 
 #### Consume a message from a Topic
    2. Execute kafka-console-consumer.sh
