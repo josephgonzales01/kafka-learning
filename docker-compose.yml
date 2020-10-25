@@ -15,5 +15,8 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: dev_zookeeper:2181
+      #Automatically creates a topic during kafka creation.
+      #format comma separated <topicName>:<partitions>:<replicas>
+      KAFKA_CREATE_TOPICS: "firstTopic:3:1, anyTopic:3:1, anotherTopic:2:1"
     depends_on:
       - zookeeper
