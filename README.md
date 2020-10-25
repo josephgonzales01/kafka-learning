@@ -31,5 +31,5 @@
 #### Consume a message from a Topic
    2. Execute kafka-console-consumer.sh
    >```
-   > $ kafka-console-consumer.sh --bootstrap-server dev_kafka:9092 --topic --from-beginning
+   > $ kafka-console-consumer.sh --bootstrap-server dev_kafka:9092 --topic firstTopic --from-beginning
    >```
