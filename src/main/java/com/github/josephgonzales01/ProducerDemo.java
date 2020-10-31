@@ -21,6 +21,7 @@ public class ProducerDemo {
     Properties properties = new Properties();
     properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAPSERVER);
     properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    properties.put(ProducerConfig.ACKS_CONFIG, "all");
     properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
     producer = new KafkaProducer<>(properties);
   }
@@ -31,6 +32,10 @@ public class ProducerDemo {
 
     for (int i = 1; i <= 10; i++) {
       produceMessageWithCallback(TOPIC_FIRSTTOPIC, "sample message " + i + 10);
+    }
+
+    for (int i = 1; i <= 10; i++) {
+      produceMessageWithKeysAndCallback(TOPIC_FIRSTTOPIC, "key-" + i, "sample message " + i + 10);
     }
 
     close();
@@ -47,6 +52,25 @@ public class ProducerDemo {
   private static void produceMessageWithCallback(final String topic, final String message) {
     //Create Producer record
     ProducerRecord<String, String> record = new ProducerRecord<>(topic, message);
+
+    //Send message - asynchronous with callback that details the calls status(recordMetadata) or error(exception)
+    producer.send(record, (recordMetadata, e) -> {
+      //check if the call failed
+      if (e == null) {
+        log.info("Received metadata. \n Topic:{} | Partition:{} | Offset:{} | Timestamp:{}",
+            recordMetadata.topic(), recordMetadata.partition(), recordMetadata.offset(),
+            recordMetadata.timestamp());
+      } else {
+        log.error("Error while producing a message: {}", e.getMessage());
+      }
+    });
+
+  }
+
+  private static void produceMessageWithKeysAndCallback(final String topic, final String key,
+      final String message) {
+    //Create Producer record
+    ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, message);
 
     //Send message - asynchronous with callback that details the calls status(recordMetadata) or error(exception)
     producer.send(record, (recordMetadata, e) -> {
